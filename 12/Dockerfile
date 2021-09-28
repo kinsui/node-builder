@@ -1,10 +1,8 @@
-FROM node:current-slim
+FROM node:12-slim
 MAINTAINER cy@cyicy.cn
 LABEL org.opencontainers.image.authors="cy@cyicy.cn"
-COPY start.sh /root/start.sh
-RUN set -ex \
-    && chmod +x /root/start.sh \
-    && npm config set registry https://registry.npm.taobao.org \
+COPY ../start.sh /root/start.sh
+RUN npm config set registry https://registry.npm.taobao.org \
     && yarn config set registry https://registry.npm.taobao.org \
     && npm i -g --unsafe-perm mirror-config-china --registry=https://registry.npm.taobao.org \
     && npm i -g --unsafe-perm grunt-cli \
@@ -15,6 +13,7 @@ RUN set -ex \
     && npm --version | tee -a build.env \
     && yarn --version | tee -a build.env \
     && gulp --version | tee -a build.env \
-    && grunt --version | tee -a build.env
+    && grunt --version | tee -a build.env \
+    && chmod +x /root/start.sh
 
 CMD [ "/root/start.sh" ]
